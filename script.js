@@ -96,41 +96,77 @@ const gameBoard = (() => {
         }
     }
 
-
-    const cellElements = document.querySelectorAll('.box');
-    
-    let turns = 0;
-    const handleClick = (e) => {
-        let boxNumber = parseInt(e.target.className[4]);
-        turns ++;
-        const target = e.target;
-            if(player1.turn === true && winner === null && target.textContent ==="")
-            {
-                target.classList.add("cross");
-                boxArr[boxNumber] = player1.value;
-                player1.turn = false;
-                player2.turn = true;
-            }
-            else if (player2.turn === true && winner === null && target.textContent==="")
-            {
-                target.classList.add("zero");
-                boxArr[boxNumber] = player2.value;
-                player1.turn = true;
-                player2.turn = false;
-            }
-        
-        if(turns>=5)
-        {
-            isWin(boxArr);
-        }
-    }
-    cellElements.forEach (cell => {
-        cell.addEventListener('click', handleClick, { once: true})
-    });
-
     //Swaps turns between players
     const playerTurn = (function ()  {
-        console.log('aaaa');
+        const cellElements = document.querySelectorAll('.box');
+        const overlay = document.querySelector('.overlay');
+        const winnerMessage = document.querySelector('.message');
+    
+        let turns = 0;
+        const handleClick = (e) => {
+            let boxNumber = parseInt(e.target.className[4]);
+            turns ++;
+            console.log(turns);
+            const target = e.target;
+                if(player1.turn === true && winner === null && target.classList.contains("circle")!==true)
+                {
+                    target.classList.add("cross");
+                    boxArr[boxNumber] = player1.value;
+                    player1.turn = false;
+                    player2.turn = true;
+                }
+                else if (player2.turn === true && winner === null && target.classList.contains("cross")!==true)
+                {
+                    target.classList.add("zero");
+                    boxArr[boxNumber] = player2.value;
+                    player1.turn = true;
+                    player2.turn = false;
+                }
+            
+            if(turns>=5)
+            {
+                if(isWin(boxArr) !=0 && isWin(boxArr) !=1 && turns !== 9)
+                {
+                    return;
+                }
+                else if(turns === 9)
+                {
+                    overlay.classList.add("show");
+                    winnerMessage.textContent = "Is a draw!";
+                    turns=0;
+                }
+                else if(isWin(boxArr) === 0)
+                {
+                    overlay.classList.add("show");
+                    winnerMessage.textContent = "0 wins!";
+                    turns=0;
+                }
+                else 
+                {
+                    overlay.classList.add("show");
+                    winnerMessage.textContent = "X wins!";
+                    turns=0;
+                }
+            }
+        }
+        cellElements.forEach (cell => {
+            cell.addEventListener('click', handleClick)
+        });
+        return {cellElements, overlay, winnerMessage};
+    })();
+
+    const restartBtn = document.getElementById('restartButton');
+
+    restartBtn.addEventListener('click', (e) =>{
+        playerTurn.cellElements.forEach (cell => {
+            cell.classList.remove("cross");
+            cell.classList.remove("zero");
+        })
+        boxArr = [];
+        player1.turn = true;
+        player2.turn = false;
+        playerTurn.overlay.classList.remove("show");
+        winner = null;
     });
 
     
