@@ -25,13 +25,13 @@ body {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     gap: 5px;
-    background-color: black;
+    background-color: #00008B;
 }
 
 .box {
     width: 150px;
     height: 150px;
-    background-color: aliceblue;
+    background-color: #ADD8E6;
     position:relative;
     cursor: grab;
 }
@@ -46,12 +46,11 @@ body {
     align-items: center;
     content: "\D7";
     font-size: 100px;
-    color: black;
+    color: #FF4500;
     line-height: 100px;
     position:absolute;
-    transition:ease-in-out;
-    transition-duration: 0.2s;
 }
+
 
 .box.zero:after {
     display: flex;
@@ -63,11 +62,9 @@ body {
     align-items: center;
     content: "\b66";
     font-size: 100px;
-    color: black;
+    color: #FF4500;
     line-height: 100px;
     position:absolute;
-    transition-duration: 0.2s;
-    transition:ease-in-out;
 }
 
 .overlay {
